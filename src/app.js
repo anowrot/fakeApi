@@ -4,6 +4,9 @@ const fakeDb = require("../data/fakeDb");
 const router = jsonServer.router(fakeDb());
 const bodyParser = require("body-parser");
 const usersDb = require("../data/usersDb");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require("../swagger.json");
+
 
 const { errorHandler } = require("../handlers/errorHandler");
 const { checkToken, isAuthorized, isSecure } = require("../handlers/authorize");
@@ -12,6 +15,7 @@ const { validateUserSchema } = require("../schema/validateSchema");
 
 app.use(bodyParser.json());
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.post("/users", validateUserSchema, createUser);
 app.post("/login", login);
 app.use(isSecure, checkToken, isAuthorized, router);

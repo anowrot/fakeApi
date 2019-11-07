@@ -1,0 +1,110 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "this is simple fake api backend application",
+    "version": "1.0.0",
+    "title": "fakeApi",
+    "contact": {
+      "email": "nowrot.adam@gmail.com"
+    }
+  },
+  "host": "http://localhost:3000/",
+  "basePath": "",
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": ["app"],
+        "summary": "login as existing user",
+        "produces": "text",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "username and password values",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/loginData"
+            }
+          }
+        ],
+        "schema": {
+          "$ref": "#/definitions/loginData"
+        },
+        "responses": {
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": ["app"],
+        "summary": "create new user",
+        "produces": "text",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "proper user data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userSchema"
+            }
+          }
+        ],
+        "schema": {
+          "$ref": "#/definitions/userSchema"
+        },
+        "responses": {
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "loginData": {
+      "type": "object",
+      "required": ["username", "password"],
+      "properties": {
+        "username": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 30
+        },
+        "password": {
+          "type": "string",
+          "pattern": "/^[a-zA-Z0-9]{3,6}$/"
+        }
+      }
+    },
+    "userSchema": {
+      "type": "object",
+      "required": ["username", "password", "firstName", "lastName"],
+      "properties": {
+        "username": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 30
+        },
+        "password": {
+          "type": "string",
+          "pattern": "/^[a-zA-Z0-9]{3,6}$/"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        }
+      }
+    }
+  },
+
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

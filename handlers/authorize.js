@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+let _ = require("underscore");
 
 module.exports = {
   checkToken(req, res, next) {
@@ -25,5 +26,14 @@ module.exports = {
         next();
       }
     });
+  },
+  isSecure(req, res, next) {
+    securePaths = ["/employees"];
+
+    if (_.contains(securePaths, req.path)) return next();
+
+    const err = new Error(`page not found`);
+    err.statusCode = 404;
+    next(err);
   }
 };

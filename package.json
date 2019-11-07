@@ -4,6 +4,7 @@
   "description": "simple fake REST api",
   "main": "./src/server.js",
   "scripts": {
+    "start": "docker build -t my-api . && docker run -p 3000:3000 my-api",
     "test": "echo \"Error: no test specified\" && exit 1",
     "auth-tests": "cd postman-tests && newman run testing-auth.postman_collection.json -e fakeApi.postman_environment.json",
     "create-user-tests": "cd postman-tests && newman run testing-create-new-user.postman_collection.json -e fakeApi.postman_environment.json"

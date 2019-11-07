@@ -57,8 +57,24 @@
           "$ref": "#/definitions/userSchema"
         },
         "responses": {
+          "400": {
+            "description": "inappropriate data"
+          }
+        }
+      }
+    },
+    "/employees": {
+      "get": {
+        "tags": ["app"],
+        "summary": "view secure data",
+        "security": [
+          {
+            "jwt_auth": []
+          }
+        ],
+        "responses": {
           "404": {
-            "description": "User not found"
+            "description": "unauthorized"
           }
         }
       }

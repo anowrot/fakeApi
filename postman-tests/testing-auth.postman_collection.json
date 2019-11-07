@@ -1,0 +1,296 @@
+{
+	"info": {
+		"_postman_id": "10372b4f-6b40-453d-9f5e-573bee2e0967",
+		"name": "testing auth",
+		"description": "simple tests for TSH QA purpose",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "empty get request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "75eb3c47-5d89-47f9-aac7-e378f995e28d",
+						"exec": [
+							"pm.test(\"response is unauthorized\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"response message is `user not found`\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"user not found\");",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0c882741-e615-45b5-85d8-dd92be5a6aa5",
+						"exec": [
+							"pm.test(\"response is unauthorized\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"response message is `user not found`\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"user not found\");",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login wrong credentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e5f397fe-6193-45d5-82f1-ae1cf30691dc",
+						"exec": [
+							"pm.test(\"response is unauthorized\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"response message is `user not found`\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"user not found\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"testUser\",\n\t\"password\": \"1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login apropriate credentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ec6bdccb-54c6-4120-b492-d6ccfc0a0193",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var apiResponse = pm.response.text()",
+							"pm.environment.set(\"apiToken\", apiResponse)",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"user123\",\n\t\"password\": \"1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "log in and access to secure data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4d90369c-9399-4a3f-a3ef-46fad88087a5",
+						"exec": [
+							"  pm.test(\"response should be 200 and have JSON body\", function () {",
+							"      pm.response.to.be.ok;",
+							"      pm.response.to.have.jsonBody();",
+							"      ",
+							"  });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{apiToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/employees",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user without token cannot access secure data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "525aeabc-974c-4810-9dbb-00dda65a75ad",
+						"exec": [
+							"pm.test(\"response is unauthorized\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"user123\",\n\t\"password\": \"1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/employees",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"employees"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,0 +1,253 @@
+{
+  "info": {
+    "_postman_id": "8269288b-359b-40eb-8248-6b28f7f60273",
+    "name": "testing create new user",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "create user without some data",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "ffe7f817-f0c4-4803-b61b-06aa46441221",
+            "exec": [
+              "pm.test(\"response is 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "var apiResponse = pm.response.text()",
+              "pm.environment.set(\"apiToken\", apiResponse)",
+              "",
+              "pm.test(\"response matches string\", function () {",
+              "    pm.expect(pm.response.text()).to.include(`\"lastName\" is required`);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"username\": \"adam\",\n\t\"password\": \"test\",\n\t\"firstName\": \"adam\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/users",
+          "host": ["{{url}}"],
+          "path": ["users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create user with inappropriate password",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "6500b19a-3fc7-4f9b-a4ee-9ce9b9211ca5",
+            "exec": [
+              "pm.test(\"response is 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "var apiResponse = pm.response.text()",
+              "pm.environment.set(\"apiToken\", apiResponse)",
+              "",
+              "pm.test(\"response matches string\", function () {",
+              "    pm.expect(pm.response.text()).to.include(`\"password\" with value \"test1234\" fails to match the required pattern: /^[a-zA-Z0-9]{3,6}$/`);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"username\": \"adam\",\n\t\"password\": \"test1234\",\n\t\"firstName\": \"adam\",\n\t\"lastName\": \"test\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/users",
+          "host": ["{{url}}"],
+          "path": ["users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create user wit proper data",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "abcac330-d5f8-408e-8b1b-6ea8cfd519f1",
+            "exec": [
+              "pm.test(\"response is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"response matches string\", function () {",
+              "    pm.expect(pm.response.text()).to.include(`user created`);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"username\": \"adam2\",\n\t\"password\": \"test\",\n\t\"firstName\": \"adam\",\n\t\"lastName\": \"test\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/users",
+          "host": ["{{url}}"],
+          "path": ["users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "log in as newly created user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "7c399990-9e57-4340-8e42-4a10933685b9",
+            "exec": [
+              "pm.test(\"response is ok\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "var apiResponse = pm.response.text()",
+              "pm.environment.set(\"apiToken\", apiResponse)",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"username\": \"adam2\",\n\t\"password\": \"test\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/login",
+          "host": ["{{url}}"],
+          "path": ["login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "user has access to secure data",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "016f3e70-90ba-4cfb-a5d3-5f2b3fadae34",
+            "exec": [
+              "  pm.test(\"response should be ok and have JSON body\", function () {",
+              "      pm.response.to.be.ok;",
+              "      pm.response.to.have.jsonBody();",
+              "  });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{apiToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{url}}/employees",
+          "host": ["{{url}}"],
+          "path": ["employees"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "protocolProfileBehavior": {}
+}

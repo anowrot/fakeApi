@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "10372b4f-6b40-453d-9f5e-573bee2e0967",
 		"name": "testing auth",
-		"description": "simple tests for TSH QA purpose",
+		"description": "simple tests for QA purpose",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [

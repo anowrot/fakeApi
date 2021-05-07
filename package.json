@@ -29,7 +29,7 @@
     "jsonwebtoken": "^8.5.1",
     "newman": "^4.5.5",
     "swagger-ui-express": "^4.1.2",
-    "underscore": "^1.9.1"
+    "underscore": "^1.12.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.4",
